@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { PlanetLabel } from './PlanetLabel'
 import { PlanetInfo } from './PlanetInfo'
+import { useSolar } from './SolarContext'
 
 function SaturnRings() {
   return (
@@ -42,6 +43,8 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
   const meshRef = useRef()
   const orbitAngle = useRef(phase)
   const [hovered, setHovered] = useState(false)
+  const { selectPlanet, selectedPlanet } = useSolar()
+  const isSelected = selectedPlanet === name
 
   useFrame(() => {
     orbitAngle.current += 0.003 * orbitSpeed
@@ -51,7 +54,7 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
     if (meshRef.current.material) {
       meshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
         meshRef.current.material.emissiveIntensity,
-        hovered ? 0.3 : 0,
+        isSelected ? 0.6 : hovered ? 0.3 : 0,
         0.1
       )
     }
@@ -63,6 +66,10 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
         ref={meshRef}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
+        onClick={(e) => {
+          e.stopPropagation()
+          selectPlanet(name)
+        }}
       >
         <sphereGeometry args={[radius, 14, 14]} />
         <meshStandardMaterial
