@@ -1,6 +1,21 @@
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import { Billboard } from "@react-three/drei";
 
 export function Sun() {
+  const innerRef = useRef();
+  const coronaRef = useRef();
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (innerRef.current) {
+      innerRef.current.scale.setScalar(1 + Math.sin(t * 0.8) * 0.02);
+    }
+    if (coronaRef.current) {
+      coronaRef.current.material.opacity = 0.06 + Math.sin(t * 0.5) * 0.02;
+    }
+  });
+
   return (
     <group>
       {/* Core */}
@@ -10,7 +25,7 @@ export function Sun() {
       </mesh>
 
       {/* Inner glow */}
-      <mesh>
+      <mesh ref={innerRef}>
         <sphereGeometry args={[9.5, 64, 64]} />
         <meshBasicMaterial
           color="#FFD86B"
@@ -30,7 +45,7 @@ export function Sun() {
       </mesh>
 
       {/* Fake corona */}
-      <Billboard>
+      <Billboard ref={coronaRef}>
         <mesh>
           <circleGeometry args={[20, 64]} />
           <meshBasicMaterial
