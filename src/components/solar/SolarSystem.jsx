@@ -7,6 +7,7 @@ import { Stars } from './Stars'
 import { DustParticles } from './DustParticles'
 import { CameraController } from './CameraController'
 import { OrbitPath } from './OrbitPath'
+import { AsteroidBelt } from './AsteroidBelt'
 
 const PLANETS = [
   { name: 'Mercury', radius: 0.20, distance: 18, color: '#b5b5b5', orbitSpeed: 4.15, rotSpeed: 0.005, phase: 0.5, mass: '3.30e23 kg' },
@@ -42,6 +43,8 @@ export function SolarSystem() {
         {PLANETS.map((p) => (
           <Planet key={p.name} {...p} />
         ))}
+
+        <AsteroidBelt />
       </group>
 
       <Stars />
