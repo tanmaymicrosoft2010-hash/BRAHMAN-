@@ -9,6 +9,7 @@ import { DustParticles } from './DustParticles'
 import { CameraController } from './CameraController'
 import { OrbitPath } from './OrbitPath'
 import { AsteroidBelt } from './AsteroidBelt'
+import { OrbitTrail } from './OrbitTrail'
 import { SolarProvider } from './SolarContext'
 
 const PLANETS = [
@@ -40,6 +41,16 @@ export function SolarSystem() {
 
         {PLANETS.map((p) => (
           <OrbitPath key={`orbit-${p.name}`} distance={p.distance} />
+        ))}
+
+        {PLANETS.map((p) => (
+          <OrbitTrail
+            key={`trail-${p.name}`}
+            distance={p.distance}
+            color={p.color}
+            speed={p.orbitSpeed}
+            phase={p.phase}
+          />
         ))}
 
         {PLANETS.map((p) => (
