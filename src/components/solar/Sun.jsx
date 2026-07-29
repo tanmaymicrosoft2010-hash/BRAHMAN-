@@ -6,6 +6,8 @@ export function Sun() {
   const innerRef = useRef();
   const coronaRef = useRef();
 
+  const coreRef = useRef();
+
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     if (innerRef.current) {
@@ -14,12 +16,15 @@ export function Sun() {
     if (coronaRef.current) {
       coronaRef.current.material.opacity = 0.06 + Math.sin(t * 0.5) * 0.02;
     }
+    if (coreRef.current) {
+      coreRef.current.rotation.y += 0.001;
+    }
   });
 
   return (
     <group>
       {/* Core */}
-      <mesh>
+      <mesh ref={coreRef}>
         <sphereGeometry args={[8, 64, 64]} />
         <meshBasicMaterial color="#FFD86B" />
       </mesh>
