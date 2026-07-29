@@ -24,47 +24,45 @@ const PLANETS = [
 
 export function SolarSystem() {
   return (
-    <SolarProvider>
-      <Canvas
-        camera={{ position: [0, 240, 0], fov: 45, near: 0.1, far: 3000 }}
-        gl={{ antialias: false, powerPreference: 'high-performance' }}
-        dpr={[1, 1.2]}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <color attach="background" args={['#040508']} />
-        <fog attach="fog" args={['#040508', 200, 800]} />
+    <Canvas
+      camera={{ position: [0, 240, 0], fov: 45, near: 0.1, far: 3000 }}
+      gl={{ antialias: false, powerPreference: 'high-performance' }}
+      dpr={[1, 1.2]}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <color attach="background" args={['#040508']} />
+      <fog attach="fog" args={['#040508', 200, 800]} />
 
-        <ambientLight intensity={0.06} />
+      <ambientLight intensity={0.06} />
 
-        <group rotation={[THREE.MathUtils.degToRad(12), 0, 0]}>
-          <Sun />
+      <group rotation={[THREE.MathUtils.degToRad(12), 0, 0]}>
+        <Sun />
 
-          {PLANETS.map((p) => (
-            <OrbitPath key={`orbit-${p.name}`} distance={p.distance} />
-          ))}
+        {PLANETS.map((p) => (
+          <OrbitPath key={`orbit-${p.name}`} distance={p.distance} />
+        ))}
 
-          {PLANETS.map((p) => (
-            <Planet key={p.name} {...p} />
-          ))}
+        {PLANETS.map((p) => (
+          <Planet key={p.name} {...p} />
+        ))}
 
-          <AsteroidBelt />
-        </group>
+        <AsteroidBelt />
+      </group>
 
-        <Stars />
-        <DustParticles />
-        <CameraController />
+      <Stars />
+      <DustParticles />
+      <CameraController />
 
-        <EffectComposer>
-          <Bloom
-            intensity={0.8}
-            luminanceThreshold={0.6}
-            luminanceSmoothing={0.4}
-            mipmapBlur
-          />
-        </EffectComposer>
+      <EffectComposer>
+        <Bloom
+          intensity={0.8}
+          luminanceThreshold={0.6}
+          luminanceSmoothing={0.4}
+          mipmapBlur
+        />
+      </EffectComposer>
 
-        <AdaptiveDpr pixelated />
-      </Canvas>
-    </SolarProvider>
+      <AdaptiveDpr pixelated />
+    </Canvas>
   )
 }
