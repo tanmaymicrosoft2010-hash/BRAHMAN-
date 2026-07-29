@@ -10,6 +10,7 @@ export function DustParticles() {
   const data = useMemo(() => {
     const positions = new Float32Array(COUNT * 3)
     const velocities = new Float32Array(COUNT * 3)
+    const colors = new Float32Array(COUNT * 3)
     for (let i = 0; i < COUNT; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 300
       positions[i * 3 + 1] = (Math.random() - 0.5) * 300
@@ -17,8 +18,12 @@ export function DustParticles() {
       velocities[i * 3] = (Math.random() - 0.5) * 0.02
       velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02
       velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02
+      const brightness = 0.7 + Math.random() * 0.3
+      colors[i * 3] = brightness
+      colors[i * 3 + 1] = brightness
+      colors[i * 3 + 2] = brightness * (0.9 + Math.random() * 0.1)
     }
-    return { positions, velocities }
+    return { positions, velocities, colors }
   }, [])
 
   useFrame(() => {
@@ -42,8 +47,12 @@ export function DustParticles() {
           attach="attributes-position"
           args={[data.positions, 3]}
         />
+        <bufferAttribute
+          attach="attributes-color"
+          args={[data.colors, 3]}
+        />
       </bufferGeometry>
-      <pointsMaterial size={0.15} color="#ffffff" transparent opacity={0.15} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.15} vertexColors transparent opacity={0.15} sizeAttenuation depthWrite={false} />
     </points>
   )
 }
