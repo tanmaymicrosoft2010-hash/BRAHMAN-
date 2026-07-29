@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import '../styles/Home.css';
 import { SolarSystem } from './solar/SolarSystem';
+import { LoadingScreen } from './LoadingScreen';
 
 const Home = () => {
   const inputRef = useRef(null);
@@ -26,6 +27,8 @@ const Home = () => {
 
   return (
     <div className="layout-wrapper">
+      <LoadingScreen />
+
       {/* Layer 1: Three.js Solar System */}
       <div className="scene-layer">
         <SolarSystem />
