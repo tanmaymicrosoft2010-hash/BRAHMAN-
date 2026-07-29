@@ -267,3 +267,43 @@ body, html {
     left: 24px;
   }
 }
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 32px;
+    letter-spacing: 0.3em;
+  }
+  .search-bar {
+    width: 95vw;
+    height: 56px;
+    padding: 0 20px;
+  }
+  .search-input {
+    font-size: 14px;
+  }
+  .helper-text {
+    font-size: 12px;
+    padding: 0 16px;
+  }
+  .meta-info {
+    bottom: 16px;
+    left: 16px;
+    font-size: 9px;
+  }
+}
+
+/* =========================================
+   Search Focus State
+   ========================================= */
+.search-bar:focus-within {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 48px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 80px rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================
+   Selection
+   ========================================= */
+::selection {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
