@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, Fog } from '@react-three/drei'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { Sun } from './Sun'
 import { Planet } from './Planet'
@@ -52,6 +53,15 @@ export function SolarSystem() {
         <Stars />
         <DustParticles />
         <CameraController />
+
+        <EffectComposer>
+          <Bloom
+            intensity={0.8}
+            luminanceThreshold={0.6}
+            luminanceSmoothing={0.4}
+            mipmapBlur
+          />
+        </EffectComposer>
 
         <AdaptiveDpr pixelated />
       </Canvas>
