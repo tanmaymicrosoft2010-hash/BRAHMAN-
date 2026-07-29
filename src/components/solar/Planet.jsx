@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { PlanetLabel } from './PlanetLabel'
+import { PlanetInfo } from './PlanetInfo'
 
 function SaturnRings() {
   return (
@@ -75,6 +76,7 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
       {hasRings && <SaturnRings />}
       {hasMoon && <Moon />}
       <PlanetLabel name={name} />
+      <PlanetInfo name={name} visible={hovered} />
     </group>
   )
 }
