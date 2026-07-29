@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { AdaptiveDpr } from '@react-three/drei'
+import { AdaptiveDpr, Fog } from '@react-three/drei'
 import * as THREE from 'three'
 import { Sun } from './Sun'
 import { Planet } from './Planet'
@@ -28,6 +28,7 @@ export function SolarSystem() {
       style={{ width: '100%', height: '100%' }}
     >
       <color attach="background" args={['#040508']} />
+      <fog attach="fog" args={['#040508', 200, 800]} />
 
       <ambientLight intensity={0.06} />
 
