@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { PlanetLabel } from './PlanetLabel'
@@ -40,19 +40,37 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
   const groupRef = useRef()
   const meshRef = useRef()
   const orbitAngle = useRef(phase)
+  const [hovered, setHovered] = useState(false)
 
   useFrame(() => {
     orbitAngle.current += 0.003 * orbitSpeed
     groupRef.current.position.x = Math.cos(orbitAngle.current) * distance
     groupRef.current.position.z = Math.sin(orbitAngle.current) * distance
     meshRef.current.rotation.y += rotSpeed
+    if (meshRef.current.material) {
+      meshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
+        meshRef.current.material.emissiveIntensity,
+        hovered ? 0.3 : 0,
+        0.1
+      )
+    }
   })
 
   return (
     <group ref={groupRef}>
-      <mesh ref={meshRef}>
+      <mesh
+        ref={meshRef}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
         <sphereGeometry args={[radius, 14, 14]} />
-        <meshStandardMaterial color={color} roughness={0.7} metalness={0.05} />
+        <meshStandardMaterial
+          color={color}
+          roughness={0.7}
+          metalness={0.05}
+          emissive={color}
+          emissiveIntensity={0}
+        />
       </mesh>
       {hasRings && <SaturnRings />}
       {hasMoon && <Moon />}
