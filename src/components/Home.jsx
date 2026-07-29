@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import '../styles/Home.css';
 import { SolarSystem } from './solar/SolarSystem';
 
@@ -11,6 +11,18 @@ const Home = () => {
       // Trigger search logic here
     }
   };
+
+  const handleSearchShortcut = useCallback((e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      inputRef.current?.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleSearchShortcut);
+    return () => window.removeEventListener('keydown', handleSearchShortcut);
+  }, [handleSearchShortcut]);
 
   return (
     <div className="layout-wrapper">
@@ -48,10 +60,11 @@ const Home = () => {
               ref={inputRef}
               type="text"
               className="search-input"
-              placeholder="Search anything..."
+              placeholder="Search anything... (Ctrl+K)"
               onKeyDown={handleKeyDown}
               spellCheck="false"
               autoComplete="off"
+              aria-label="Search"
             />
           </div>
 
