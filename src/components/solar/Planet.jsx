@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { PlanetLabel } from './PlanetLabel'
 import { PlanetInfo } from './PlanetInfo'
 import { useSolar } from './SolarContext'
+import { Atmosphere } from './Atmosphere'
 
 function SaturnRings() {
   return (
@@ -38,7 +39,7 @@ function Moon() {
   )
 }
 
-export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, hasRings, hasMoon, phase }) {
+export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, hasRings, hasMoon, hasAtmosphere, phase }) {
   const groupRef = useRef()
   const meshRef = useRef()
   const orbitAngle = useRef(phase)
@@ -82,6 +83,7 @@ export function Planet({ name, radius, distance, color, orbitSpeed, rotSpeed, ha
       </mesh>
       {hasRings && <SaturnRings />}
       {hasMoon && <Moon />}
+      {hasAtmosphere && <Atmosphere radius={radius} color={color} />}
       <PlanetLabel name={name} />
       <PlanetInfo name={name} visible={hovered} />
     </group>
