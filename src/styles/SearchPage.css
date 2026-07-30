@@ -21,15 +21,17 @@
 }
 
 body {
-  background-color: var(--bg-dark);
+  background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* â”€â”€â”€ Layout â”€â”€â”€ */
 
 .brahman-layout {
   display: flex;
@@ -39,33 +41,17 @@ body {
 }
 
 .panel-left {
-  width: 34%;
+  width: 35%;
   height: 100%;
-  padding: 6rem 4rem 7rem 4rem;
+  padding: 5.5rem 2.5rem 2.5rem 3.5rem;
   display: flex;
   flex-direction: column;
   z-index: 10;
   position: relative;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.06) transparent;
-}
-
-.panel-left::-webkit-scrollbar {
-  width: 4px;
-}
-
-.panel-left::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.panel-left::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
 }
 
 .panel-right {
-  width: 66%;
+  width: 65%;
   height: 100%;
   position: relative;
   display: flex;
@@ -81,72 +67,85 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 2rem 4rem;
+  padding: 1.5rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 50;
 }
 
-.brand {
-  font-size: 0.75rem;
+.brand-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.3em;
-  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.brand-btn:hover {
+  color: var(--text-primary);
 }
 
 .nav-actions {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
 }
 
 .nav-item {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: color 0.3s ease;
   background: none;
   border: none;
-  outline: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
+  transition: all 0.2s;
   font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
 }
 
 .nav-item:hover {
   color: var(--text-primary);
+  background: var(--card-bg);
 }
 
-/* â”€â”€â”€ Query Header â”€â”€â”€ */
+/* â”€â”€â”€ Query Title â”€â”€â”€ */
 
 .query-header {
-  margin-bottom: var(--space-xl);
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .query-title {
-  font-size: clamp(3rem, 4vw, 4.5rem);
-  font-weight: 200;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-sm);
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
 
-.metadata-row {
+.query-meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  gap: 0.75rem;
 }
 
-.dot {
-  width: 3px;
-  height: 3px;
-  background-color: var(--text-secondary);
+.query-meta-dot {
+  width: 2px;
+  height: 2px;
+  background: var(--text-secondary);
   border-radius: 50%;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* â”€â”€â”€ AI Overview â”€â”€â”€ */
@@ -277,34 +276,32 @@ body {
   perspective: 1200px;
 }
 
-.space-background {
+/* Stars */
+.space-stars {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.01) 1px, transparent 1px),
-    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.015) 1px, transparent 1px);
-  background-size: 120px 120px, 80px 80px;
-  opacity: 0.5;
   z-index: 1;
 }
 
-.planet-core {
-  width: 65vh;
-  height: 65vh;
+.star {
+  position: absolute;
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 30% 30%,
-    #1a1c23 0%,
-    #0a0b0e 40%,
-    #020203 100%
-  );
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Planet core */
+.planet-core {
+  width: 55vh;
+  height: 55vh;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #1e212a 0%, #0c0d12 45%, #040508 100%);
   box-shadow:
-    inset -20px -20px 60px rgba(0, 0, 0, 0.9),
-    0 0 120px rgba(147, 197, 253, 0.05),
-    0 0 40px rgba(234, 216, 177, 0.02);
+    inset -16px -16px 48px rgba(0, 0, 0, 0.85),
+    0 0 100px rgba(255, 211, 107, 0.03),
+    0 0 30px rgba(255, 255, 255, 0.01);
   position: relative;
   z-index: 2;
-  animation: planetRotate 120s linear infinite;
+  animation: planetRotate 160s linear infinite;
 }
 
 .planet-core::after {
@@ -314,48 +311,51 @@ body {
   border-radius: 50%;
   background:
     repeating-linear-gradient(
-      to bottom,
+      0deg,
       transparent,
-      transparent 10px,
-      rgba(255,255,255,0.02) 12px,
-      rgba(255,255,255,0.01) 14px
+      transparent 8px,
+      rgba(255, 255, 255, 0.015) 10px,
+      transparent 12px
     );
   mix-blend-mode: overlay;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
+/* Atmosphere glow */
 .planet-atmosphere {
   position: absolute;
-  width: 68vh;
-  height: 68vh;
+  width: 58vh;
+  height: 58vh;
   border-radius: 50%;
   background: radial-gradient(
     circle at 50% 50%,
-    transparent 65%,
-    rgba(147, 197, 253, 0.03) 90%,
+    transparent 62%,
+    rgba(255, 211, 107, 0.02) 88%,
     transparent 100%
   );
   z-index: 3;
   pointer-events: none;
 }
 
+/* Ring */
 .planet-ring {
   position: absolute;
-  width: 130vh;
-  height: 130vh;
+  width: 110vh;
+  height: 110vh;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  transform: rotateX(76deg) rotateY(-10deg);
+  border: 1px solid rgba(255, 255, 255, 0.015);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  transform: rotateX(76deg) rotateY(-8deg);
   z-index: 1;
 }
 
+/* Moon */
 .moon-orbit {
   position: absolute;
-  width: 100vh;
-  height: 100vh;
+  width: 85vh;
+  height: 85vh;
   border-radius: 50%;
-  animation: orbit 40s linear infinite;
+  animation: orbit 50s linear infinite;
   z-index: 4;
 }
 
@@ -363,30 +363,24 @@ body {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 16px;
-  height: 16px;
-  background: radial-gradient(circle at 30% 30%, #888, #222);
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 30% 30%, #9a9a9a, #3a3a3a);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.06);
 }
 
 /* â”€â”€â”€ Animations â”€â”€â”€ */
 
 @keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+@keyframes slideCard {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes planetRotate {
@@ -399,53 +393,40 @@ body {
   100% { transform: rotateZ(360deg); }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
 /* â”€â”€â”€ Responsive â”€â”€â”€ */
 
 @media (max-width: 1024px) {
-  .brahman-layout {
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
+  .brahman-layout { flex-direction: column; }
   .panel-left {
     width: 100%;
     height: auto;
-    padding: 5rem 2rem 2rem 2rem;
+    max-height: 55vh;
+    padding: 4rem 1.5rem 1.5rem;
+    overflow: visible;
   }
-
   .panel-right {
     width: 100%;
-    height: 50vh;
+    height: 45vh;
     order: -1;
   }
-
-  .query-title {
-    font-size: 2.5rem;
-  }
+  .query-title { font-size: 2rem; }
+  .planet-core { width: 35vh; height: 35vh; }
+  .planet-atmosphere { width: 37vh; height: 37vh; }
+  .planet-ring { width: 70vh; height: 70vh; }
 }
 
 @media (max-width: 600px) {
-  .panel-left {
-    padding: 4rem 1.25rem 1.5rem 1.25rem;
-  }
-
-  .top-bar {
-    padding: 1.25rem 1.25rem;
-  }
-
-  .nav-actions {
-    gap: 1rem;
-  }
-
-  .query-title {
-    font-size: 2rem;
-  }
-
-  .ai-overview {
-    padding: 1.5rem;
-  }
-
-  .overview-content {
-    font-size: 0.95rem;
-  }
+  .panel-left { padding: 3.5rem 1rem 1rem; max-height: 50vh; }
+  .panel-right { height: 40vh; }
+  .top-bar { padding: 1rem 1.25rem; }
+  .query-title { font-size: 1.6rem; }
+  .source-card { padding: 0.85rem 1rem; border-radius: 14px; }
+  .ai-overview { padding: 1.25rem; border-radius: 16px; }
+  .planet-core { width: 28vh; height: 28vh; }
+  .planet-atmosphere { width: 30vh; height: 30vh; }
 }
