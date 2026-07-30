@@ -112,10 +112,43 @@ function Sources({ sources }) {
   );
 }
 
+/* â”€â”€â”€ Planet Viewport with Stars â”€â”€â”€ */
+
+function generateStars(count) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const size = 0.5 + Math.random() * 1.5;
+    const opacity = 0.1 + Math.random() * 0.4;
+    stars.push({ x, y, size, opacity });
+  }
+  return stars;
+}
+
+function Stars() {
+  const stars = generateStars(60);
+  return (
+    <div className="space-stars">
+      {stars.map((s, i) => (
+        <div key={i} className="star"
+          style={{
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            width: `${s.size}px`,
+            height: `${s.size}px`,
+            opacity: s.opacity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function PlanetViewport() {
   return (
     <div className="planet-viewport">
-      <div className="space-background" />
+      <Stars />
       <div className="planet-ring" />
       <div className="planet-core" />
       <div className="planet-atmosphere" />
