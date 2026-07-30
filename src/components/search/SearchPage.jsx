@@ -36,15 +36,15 @@ function TopBar({ onBack }) {
   );
 }
 
-function QueryHeader({ query }) {
+function QueryHeader({ query, sourceCount }) {
   return (
     <div className="query-header">
-      <h1 className="query-title">{query?.toUpperCase()}</h1>
-      <div className="metadata-row">
+      <h1 className="query-title">{query}</h1>
+      <div className="query-meta">
         <span>Wikipedia Verified</span>
-        <div className="dot" />
-        <span>3 Sources</span>
-        <div className="dot" />
+        <div className="query-meta-dot" />
+        <span>{sourceCount} Sources</span>
+        <div className="query-meta-dot" />
         <span>AI Generated</span>
       </div>
     </div>
@@ -132,7 +132,7 @@ export function SearchPage({ query, onBack }) {
       <TopBar onBack={onBack} />
 
       <section className="panel-left">
-        <QueryHeader query={query} />
+        <QueryHeader query={query} sourceCount={3} />
         <AIOverview />
         <Sources />
       </section>
