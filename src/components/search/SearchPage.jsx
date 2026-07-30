@@ -112,7 +112,7 @@ function Sources({ sources }) {
   );
 }
 
-/* â”€â”€â”€ Planet Viewport with Stars â”€â”€â”€ */
+/* â”€â”€â”€ Planet Viewport with Stars, Orbits & Satellites â”€â”€â”€ */
 
 function generateStars(count) {
   const stars = [];
@@ -145,7 +145,42 @@ function Stars() {
   );
 }
 
-function PlanetViewport() {
+function OrbitingSatellites({ sources }) {
+  const orbits = sources?.slice(0, 3) || [];
+  const configs = [
+    { size: 50, tiltX: 72, tiltY: 5, duration: 35 },
+    { size: 65, tiltX: 60, tiltY: -10, duration: 45 },
+    { size: 80, tiltX: 68, tiltY: 8, duration: 55 },
+  ];
+
+  return (
+    <div className="orbit-container">
+      {orbits.map((src, i) => {
+        const cfg = configs[i] || configs[0];
+        const label = src.website || src.source || '';
+        return (
+          <div key={i} className="orbit-group"
+            style={{
+              transform: `rotateX(${cfg.tiltX}deg) rotateY(${cfg.tiltY}deg)`,
+            }}
+          >
+            <div className="orbit-ring"
+              style={{
+                width: `${cfg.size}vh`,
+                height: `${cfg.size * 0.75}vh`,
+              }}
+            />
+            <div className="orbit-spin" style={{ '--duration': `${cfg.duration}s` }}>
+              <div className="satellite-dot" data-label={label} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function PlanetViewport({ sources }) {
   return (
     <div className="planet-viewport">
       <Stars />
@@ -155,6 +190,7 @@ function PlanetViewport() {
       <div className="moon-orbit">
         <div className="moon" />
       </div>
+      <OrbitingSatellites sources={sources} />
     </div>
   );
 }
@@ -171,7 +207,7 @@ export function SearchPage({ query, onBack }) {
       </section>
 
       <section className="panel-right">
-        <PlanetViewport />
+        <PlanetViewport sources={[]} />
       </section>
     </main>
   );
