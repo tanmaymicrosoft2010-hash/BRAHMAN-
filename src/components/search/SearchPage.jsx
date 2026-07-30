@@ -1,29 +1,28 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { fetchWikipediaSummary } from '../../api/wikipedia';
 import { fetchSearchResults } from '../../api/search';
 import { fetchAIOverview } from '../../api/ai';
-import { getSearchData } from '../../data/mock';
 import '../../styles/SearchPage.css';
 
-const SparklesIcon = () => (
-  <svg className="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3v18" /><path d="M3 12h18" />
-    <path d="M16.5 7.5l-9 9" /><path d="M7.5 7.5l9 9" />
-  </svg>
-);
-
-const ExternalIcon = () => (
-  <svg className="source-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+const IconExternal = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
     <polyline points="15 3 21 3 21 9" />
     <line x1="10" y1="14" x2="21" y2="3" />
   </svg>
 );
 
-function TopBar({ onBack }) {
+const IconSparkles = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3v18" /><path d="M3 12h18" />
+    <path d="M16.5 7.5l-9 9" /><path d="M7.5 7.5l9 9" />
+  </svg>
+);
+
+function TopBar() {
   return (
     <header className="top-bar">
-      <button className="brand-btn" onClick={onBack}>BRAHMAN</button>
+      <div className="brand">BRAHMAN</div>
       <nav className="nav-actions">
         <button className="nav-item">Search</button>
         <button className="nav-item">Settings</button>
@@ -37,228 +36,109 @@ function TopBar({ onBack }) {
   );
 }
 
-function QueryHeader({ query, sourceCount }) {
+function QueryHeader({ query }) {
   return (
     <div className="query-header">
-      <h1 className="query-title">{query}</h1>
-      <div className="query-meta">
+      <h1 className="query-title">{query?.toUpperCase()}</h1>
+      <div className="metadata-row">
         <span>Wikipedia Verified</span>
-        <div className="query-meta-dot" />
-        <span>{sourceCount} Sources</span>
-        <div className="query-meta-dot" />
+        <div className="dot" />
+        <span>3 Sources</span>
+        <div className="dot" />
         <span>AI Generated</span>
       </div>
     </div>
   );
 }
 
-function AIOverview({ text, loading }) {
+function AIOverview() {
   return (
     <div className="ai-overview">
-      <div className="ai-header">
-        <SparklesIcon />
-        <span className="ai-heading">AI Overview</span>
+      <div className="overview-heading">
+        <IconSparkles /> AI Overview
       </div>
-      {loading ? (
-        <div className="ai-loading">Generating overview...</div>
-      ) : text ? (
-        <div className="ai-content">
-          {text.split('\n\n').filter(Boolean).map((p, i) => (
-            <p key={i}>{p.trim()}</p>
-          ))}
-        </div>
-      ) : null}
+      <div className="overview-content">
+        <p>
+          A black hole is a region of spacetime where gravity is so strong that nothing, including light or other electromagnetic waves, has enough energy to escape its event horizon.
+        </p>
+        <p>
+          The theory of general relativity predicts that a sufficiently compact mass can deform spacetime to form a black hole. At the center lies a gravitational singularity, a region where spacetime curvature becomes infinite.
+        </p>
+      </div>
     </div>
   );
 }
 
-function getBadge(domain, index) {
-  if (domain?.includes('wikipedia')) return { label: 'Knowledge', className: 'source-badge--knowledge' };
-  if (index === 0) return { label: 'Official', className: 'source-badge--official' };
-  if (domain?.includes('news') || domain?.includes('reuters') || domain?.includes('bbc')) return { label: 'News', className: 'source-badge--news' };
-  return null;
-}
-
-function SourceCard({ source, index }) {
-  const domain = source.website || source.source || '';
-  const badge = getBadge(domain, index);
-  const initial = source.initial || domain?.[0]?.toUpperCase() || '?';
-
+function SourceCard({ title, website, description, initial }) {
   return (
-    <a href={source.url || source.link} target="_blank" rel="noopener noreferrer"
-      className="source-card"
-      style={{ '--i': index }}>
+    <a href="#" className="source-card">
       <div className="source-favicon">{initial}</div>
-      <div className="source-body">
-        <div className="source-top">
-          <span className="source-domain">{domain}</span>
-          {badge && <span className={`source-badge ${badge.className}`}>{badge.label}</span>}
+      <div className="source-info">
+        <h3 className="source-title">{title}</h3>
+        <div className="source-meta">
+          <span>{website}</span>
+          <span style={{ opacity: 0.5 }}>â€” {description}</span>
         </div>
-        <span className="source-title">{source.title}</span>
-        <span className="source-snippet">{source.snippet || source.description}</span>
       </div>
-      <ExternalIcon />
+      <div className="external-icon">
+        <IconExternal />
+      </div>
     </a>
   );
 }
 
-function Sources({ sources }) {
-  if (!sources?.length) return null;
+function Sources() {
   return (
-    <div className="sources-section">
-      {sources.map((s, i) => (
-        <SourceCard key={i} source={s} index={i} />
-      ))}
+    <div className="sources-container">
+      <SourceCard
+        title="Black hole"
+        website="wikipedia.org"
+        description="Overview and physics"
+        initial="W"
+      />
+      <SourceCard
+        title="What Is a Black Hole?"
+        website="nasa.gov"
+        description="Astrophysics division"
+        initial="N"
+      />
+      <SourceCard
+        title="Black hole | Definition & Facts"
+        website="britannica.com"
+        description="Encyclopedia entry"
+        initial="B"
+      />
     </div>
   );
 }
 
-/* ─── Planet Viewport with Stars, Orbits & Satellites ─── */
-
-function generateStars(count) {
-  const stars = [];
-  for (let i = 0; i < count; i++) {
-    const x = Math.random() * 100;
-    const y = Math.random() * 100;
-    const size = 0.5 + Math.random() * 1.5;
-    const opacity = 0.1 + Math.random() * 0.4;
-    stars.push({ x, y, size, opacity });
-  }
-  return stars;
-}
-
-function Stars() {
-  const stars = generateStars(60);
-  return (
-    <div className="space-stars">
-      {stars.map((s, i) => (
-        <div key={i} className="star"
-          style={{
-            left: `${s.x}%`,
-            top: `${s.y}%`,
-            width: `${s.size}px`,
-            height: `${s.size}px`,
-            opacity: s.opacity,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function OrbitingSatellites({ sources }) {
-  const orbits = sources?.slice(0, 3) || [];
-  const configs = [
-    { size: 50, tiltX: 72, tiltY: 5, duration: 35 },
-    { size: 65, tiltX: 60, tiltY: -10, duration: 45 },
-    { size: 80, tiltX: 68, tiltY: 8, duration: 55 },
-  ];
-
-  return (
-    <div className="orbit-container">
-      {orbits.map((src, i) => {
-        const cfg = configs[i] || configs[0];
-        const label = src.website || src.source || '';
-        return (
-          <div key={i} className="orbit-group"
-            style={{
-              transform: `rotateX(${cfg.tiltX}deg) rotateY(${cfg.tiltY}deg)`,
-            }}
-          >
-            <div className="orbit-ring"
-              style={{
-                width: `${cfg.size}vh`,
-                height: `${cfg.size * 0.75}vh`,
-              }}
-            />
-            <div className="orbit-spin" style={{ '--duration': `${cfg.duration}s` }}>
-              <div className="satellite-dot" data-label={label} />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function PlanetViewport({ sources }) {
+function PlanetViewport() {
   return (
     <div className="planet-viewport">
-      <Stars />
+      <div className="space-background" />
       <div className="planet-ring" />
       <div className="planet-core" />
       <div className="planet-atmosphere" />
       <div className="moon-orbit">
         <div className="moon" />
       </div>
-      <OrbitingSatellites sources={sources} />
     </div>
   );
 }
 
-/* ─── Main Search Page ─── */
-
 export function SearchPage({ query, onBack }) {
-  const [data, setData] = useState(null);
-  const [loadingAI, setLoadingAI] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    const mock = getSearchData(query);
-
-    (async () => {
-      const [wiki, searchResults] = await Promise.all([
-        fetchWikipediaSummary(query),
-        fetchSearchResults(query),
-      ]);
-
-      if (cancelled) return;
-
-      const wikiSource = wiki ? {
-        title: wiki.title,
-        website: 'wikipedia.org',
-        snippet: wiki.extract?.slice(0, 120) + '...',
-        url: wiki.url,
-        initial: 'W',
-      } : null;
-
-      const extraSources = (searchResults || []).slice(0, 4).map((r) => ({
-        title: r.title,
-        website: r.source,
-        snippet: r.snippet,
-        url: r.link,
-        initial: r.source?.[0]?.toUpperCase() || '?',
-      }));
-
-      const allSources = [wikiSource, ...extraSources].filter(Boolean).slice(0, 5);
-
-      setData({ overview: null, sources: allSources, seed: mock.seed });
-
-      const aiText = await fetchAIOverview(query, wiki?.extract, searchResults);
-      if (!cancelled) {
-        setData((prev) => ({ ...prev, overview: aiText || mock.aiOverview }));
-        setLoadingAI(false);
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, [query]);
-
-  const overview = data?.overview;
-  const sources = data?.sources || [];
-
   return (
     <main className="brahman-layout">
-      <TopBar onBack={onBack} />
+      <TopBar />
 
       <section className="panel-left">
-        <QueryHeader query={query} sourceCount={sources.length} />
-        <AIOverview text={overview} loading={loadingAI && !overview} />
-        <Sources sources={sources} />
+        <QueryHeader query={query} />
+        <AIOverview />
+        <Sources />
       </section>
 
       <section className="panel-right">
-        <PlanetViewport sources={sources} />
+        <PlanetViewport />
       </section>
     </main>
   );
