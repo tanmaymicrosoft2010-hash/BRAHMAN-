@@ -19,10 +19,10 @@ const ExternalIcon = () => (
   </svg>
 );
 
-function TopBar() {
+function TopBar({ onBack }) {
   return (
     <header className="top-bar">
-      <div className="brand">BRAHMAN</div>
+      <button className="brand-btn" onClick={onBack}>BRAHMAN</button>
       <nav className="nav-actions">
         <button className="nav-item">Search</button>
         <button className="nav-item">Settings</button>
@@ -129,7 +129,7 @@ function PlanetViewport() {
 export function SearchPage({ query, onBack }) {
   return (
     <main className="brahman-layout">
-      <TopBar />
+      <TopBar onBack={onBack} />
 
       <section className="panel-left">
         <QueryHeader query={query} />
