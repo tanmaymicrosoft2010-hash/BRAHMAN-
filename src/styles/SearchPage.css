@@ -564,6 +564,11 @@ body {
   50% { opacity: 0.6; }
 }
 
+@keyframes satelliteGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 211, 107, 0.3); }
+  50% { box-shadow: 0 0 14px rgba(255, 211, 107, 0.5); }
+}
+
 /* â”€â”€â”€ Responsive â”€â”€â”€ */
 
 @media (max-width: 1024px) {
