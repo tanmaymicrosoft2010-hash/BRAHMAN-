@@ -492,6 +492,7 @@ body {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.06);
+  animation: pulse 6s ease-in-out infinite;
 }
 
 /* â”€â”€â”€ Orbiting Result Satellites â”€â”€â”€ */
