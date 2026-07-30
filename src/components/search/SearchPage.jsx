@@ -71,45 +71,43 @@ function AIOverview({ text, loading }) {
   );
 }
 
-function SourceCard({ title, website, description, initial }) {
+function getBadge(domain, index) {
+  if (domain?.includes('wikipedia')) return { label: 'Knowledge', className: 'source-badge--knowledge' };
+  if (index === 0) return { label: 'Official', className: 'source-badge--official' };
+  if (domain?.includes('news') || domain?.includes('reuters') || domain?.includes('bbc')) return { label: 'News', className: 'source-badge--news' };
+  return null;
+}
+
+function SourceCard({ source, index }) {
+  const domain = source.website || source.source || '';
+  const badge = getBadge(domain, index);
+  const initial = source.initial || domain?.[0]?.toUpperCase() || '?';
+
   return (
-    <a href="#" className="source-card">
+    <a href={source.url || source.link} target="_blank" rel="noopener noreferrer"
+      className="source-card"
+      style={{ '--i': index }}>
       <div className="source-favicon">{initial}</div>
-      <div className="source-info">
-        <h3 className="source-title">{title}</h3>
-        <div className="source-meta">
-          <span>{website}</span>
-          <span style={{ opacity: 0.5 }}>â€” {description}</span>
+      <div className="source-body">
+        <div className="source-top">
+          <span className="source-domain">{domain}</span>
+          {badge && <span className={`source-badge ${badge.className}`}>{badge.label}</span>}
         </div>
+        <span className="source-title">{source.title}</span>
+        <span className="source-snippet">{source.snippet || source.description}</span>
       </div>
-      <div className="external-icon">
-        <ExternalIcon />
-      </div>
+      <ExternalIcon />
     </a>
   );
 }
 
-function Sources() {
+function Sources({ sources }) {
+  if (!sources?.length) return null;
   return (
-    <div className="sources-container">
-      <SourceCard
-        title="Black hole"
-        website="wikipedia.org"
-        description="Overview and physics"
-        initial="W"
-      />
-      <SourceCard
-        title="What Is a Black Hole?"
-        website="nasa.gov"
-        description="Astrophysics division"
-        initial="N"
-      />
-      <SourceCard
-        title="Black hole | Definition & Facts"
-        website="britannica.com"
-        description="Encyclopedia entry"
-        initial="B"
-      />
+    <div className="sources-section">
+      {sources.map((s, i) => (
+        <SourceCard key={i} source={s} index={i} />
+      ))}
     </div>
   );
 }
@@ -136,7 +134,7 @@ export function SearchPage({ query, onBack }) {
       <section className="panel-left">
         <QueryHeader query={query} sourceCount={3} />
         <AIOverview text={null} loading={true} />
-        <Sources />
+        <Sources sources={[]} />
       </section>
 
       <section className="panel-right">
