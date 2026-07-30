@@ -1,4 +1,4 @@
-const SERPER_URL = 'https://google.serper.dev/search';
+﻿const SERPER_URL = 'https://google.serper.dev/search';
 
 export async function fetchSearchResults(query) {
   const apiKey = import.meta.env.VITE_SERPER_API_KEY;
