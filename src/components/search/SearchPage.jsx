@@ -51,20 +51,22 @@ function QueryHeader({ query, sourceCount }) {
   );
 }
 
-function AIOverview() {
+function AIOverview({ text, loading }) {
   return (
     <div className="ai-overview">
-      <div className="overview-heading">
-        <SparklesIcon /> AI Overview
+      <div className="ai-header">
+        <SparklesIcon />
+        <span className="ai-heading">AI Overview</span>
       </div>
-      <div className="overview-content">
-        <p>
-          A black hole is a region of spacetime where gravity is so strong that nothing, including light or other electromagnetic waves, has enough energy to escape its event horizon.
-        </p>
-        <p>
-          The theory of general relativity predicts that a sufficiently compact mass can deform spacetime to form a black hole. At the center lies a gravitational singularity, a region where spacetime curvature becomes infinite.
-        </p>
-      </div>
+      {loading ? (
+        <div className="ai-loading">Generating overview...</div>
+      ) : text ? (
+        <div className="ai-content">
+          {text.split('\n\n').filter(Boolean).map((p, i) => (
+            <p key={i}>{p.trim()}</p>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -133,7 +135,7 @@ export function SearchPage({ query, onBack }) {
 
       <section className="panel-left">
         <QueryHeader query={query} sourceCount={3} />
-        <AIOverview />
+        <AIOverview text={null} loading={true} />
         <Sources />
       </section>
 
