@@ -1,7 +1,8 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchWikipediaSummary } from '../../api/wikipedia';
 import { fetchSearchResults } from '../../api/search';
 import { fetchAIOverview } from '../../api/ai';
+import { getSearchData } from '../../data/mock';
 import '../../styles/SearchPage.css';
 
 const SparklesIcon = () => (
@@ -112,7 +113,7 @@ function Sources({ sources }) {
   );
 }
 
-/* â”€â”€â”€ Planet Viewport with Stars, Orbits & Satellites â”€â”€â”€ */
+/* ─── Planet Viewport with Stars, Orbits & Satellites ─── */
 
 function generateStars(count) {
   const stars = [];
@@ -195,19 +196,69 @@ function PlanetViewport({ sources }) {
   );
 }
 
+/* ─── Main Search Page ─── */
+
 export function SearchPage({ query, onBack }) {
+  const [data, setData] = useState(null);
+  const [loadingAI, setLoadingAI] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    const mock = getSearchData(query);
+
+    (async () => {
+      const [wiki, searchResults] = await Promise.all([
+        fetchWikipediaSummary(query),
+        fetchSearchResults(query),
+      ]);
+
+      if (cancelled) return;
+
+      const wikiSource = wiki ? {
+        title: wiki.title,
+        website: 'wikipedia.org',
+        snippet: wiki.extract?.slice(0, 120) + '...',
+        url: wiki.url,
+        initial: 'W',
+      } : null;
+
+      const extraSources = (searchResults || []).slice(0, 4).map((r) => ({
+        title: r.title,
+        website: r.source,
+        snippet: r.snippet,
+        url: r.link,
+        initial: r.source?.[0]?.toUpperCase() || '?',
+      }));
+
+      const allSources = [wikiSource, ...extraSources].filter(Boolean).slice(0, 5);
+
+      setData({ overview: null, sources: allSources, seed: mock.seed });
+
+      const aiText = await fetchAIOverview(query, wiki?.extract, searchResults);
+      if (!cancelled) {
+        setData((prev) => ({ ...prev, overview: aiText || mock.aiOverview }));
+        setLoadingAI(false);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [query]);
+
+  const overview = data?.overview;
+  const sources = data?.sources || [];
+
   return (
     <main className="brahman-layout">
       <TopBar onBack={onBack} />
 
       <section className="panel-left">
-        <QueryHeader query={query} sourceCount={3} />
-        <AIOverview text={null} loading={true} />
-        <Sources sources={[]} />
+        <QueryHeader query={query} sourceCount={sources.length} />
+        <AIOverview text={overview} loading={loadingAI && !overview} />
+        <Sources sources={sources} />
       </section>
 
       <section className="panel-right">
-        <PlanetViewport sources={[]} />
+        <PlanetViewport sources={sources} />
       </section>
     </main>
   );
