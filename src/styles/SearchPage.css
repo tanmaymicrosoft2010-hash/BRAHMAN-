@@ -516,6 +516,7 @@ body {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 8px rgba(255, 211, 107, 0.3);
   transition: all 0.3s;
+  animation: satelliteGlow 4s ease-in-out infinite;
 }
 
 .satellite-dot::after {
