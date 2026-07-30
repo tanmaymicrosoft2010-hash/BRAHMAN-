@@ -1,4 +1,4 @@
-export async function fetchAIOverview(query, wikiContext = '', searchResults = []) {
+﻿export async function fetchAIOverview(query, wikiContext = '', searchResults = []) {
   const apiKey = import.meta.env.VITE_GROQ_API_KEY;
 
   if (!apiKey) {
