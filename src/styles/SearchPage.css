@@ -417,6 +417,14 @@ body {
   position: relative;
   z-index: 2;
   animation: planetRotate 160s linear infinite;
+  transition: box-shadow 2s ease-in-out;
+}
+
+.planet-core:hover {
+  box-shadow:
+    inset -16px -16px 48px rgba(0, 0, 0, 0.85),
+    0 0 140px rgba(255, 211, 107, 0.06),
+    0 0 50px rgba(255, 255, 255, 0.02);
 }
 
 .planet-core::after {
